@@ -1,0 +1,11 @@
+.list{
+    display: grid;
+    grid-template-columns: 90% auto;
+}
+
+.close{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

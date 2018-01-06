@@ -1,0 +1,30 @@
+.memoadd{
+    display: flex;
+}
+
+#memo{
+    flex:1;
+    height: 50px;   
+    font-size: 20px;
+}
+
+.memoview{
+    background: white;
+    margin: 20px;
+    color:black;
+}
+
+.memoview ul{
+    list-style: none;   
+    padding:0;
+}
+
+
+.memoview ul li:nth-of-type(even){
+    background: rgb(214, 214, 214);
+}
+
+.memo-list{
+    display: grid;
+    grid-template-columns: 90% auto;
+}
