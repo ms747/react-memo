@@ -20,7 +20,7 @@
 }
 
 
-.memoview ul li:nth-of-type(even){
+.memoview ul div:nth-of-type(even){
     background: rgb(214, 214, 214);
 }
 

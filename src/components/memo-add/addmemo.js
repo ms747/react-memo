@@ -6,7 +6,7 @@ class Addmemo extends Component{
     constructor(){
         super();
         this.state = {
-            memo: 'hi',
+            memo: '',
             memoList:[],
         }
     }
@@ -27,7 +27,7 @@ class Addmemo extends Component{
                             return(
                                 <div key={itr} className="memo-list">
                                     <Memo memo_key={itr} memo_name={item}/>
-                                    <button key={itr} onClick={function test(itr){console.log(itr);}}>
+                                    <button memo_id={1} onClick={this.deleteMemo.bind(this,itr)}>
                                         X
                                     </button>
                                 </div>
@@ -46,22 +46,26 @@ class Addmemo extends Component{
     }
 
     handleClick(e){
-        var arrayvar = this.state.memoList.slice()
-        arrayvar.push(this.state.memo)
-        this.setState({ memoList: arrayvar })
-        console.log(this.state.memoList);
+        if(this.state.memo !== ''){
+            var arrayvar = this.state.memoList;
+            arrayvar.push(this.state.memo);
+            this.setState({ memoList: arrayvar });
+            this.setState({memo:''});
+        }
     }
 
     handleKeyPress(e){
         if(e.key === 'Enter'){
             this.handleClick();
-            this.setState({memo:''});
+            this.setState({memo:''});   
         }
     }
 
-    deleteMemo(itr){
-        console.log('test');
+    deleteMemo(itr,e){
         console.log(itr);
+        var arr = this.state.memoList;
+        arr.splice(itr,1);
+        this.setState({memoList:arr})
     }
 }
 
