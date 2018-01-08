@@ -2,7 +2,7 @@
 
 ## Todos
 <ol>
-<li> CRUD operations </li>
-<li> Persist Data (Firestore) </li>
+<li><strike> CRUD operations </strike></li>
+<li><strike> Persist Data (Firestore) </strike></li>
 </ol>
 
