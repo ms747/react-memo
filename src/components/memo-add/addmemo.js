@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import './addmemo.css';
 import Memo from '../memo-view/memo';
+import config from '../../config/firebaseconfig';
+import * as firebase from 'firebase';
+import firestore from 'firebase/firestore';
 
 class Addmemo extends Component{
     constructor(){
@@ -9,6 +12,9 @@ class Addmemo extends Component{
             memo: '',
             memoList:[],
         }
+        firebase.initializeApp(config);
+        this.db = firebase.firestore();
+        this.dbRef = this.db.collection('memo');
     }
     
     render(){
@@ -25,9 +31,9 @@ class Addmemo extends Component{
                         {   
                         this.state.memoList.map((item,itr)=> {
                             return(
-                                <div key={itr} className="memo-list">
-                                    <Memo memo_key={itr} memo_name={item}/>
-                                    <button memo_id={1} onClick={this.deleteMemo.bind(this,itr)}>
+                                <div key={item.id} className="memo-list">
+                                    <Memo memo_key={item.itr} memo_name={item.memo}/>
+                                    <button memo_id={1} onClick={this.deleteMemo.bind(this,item.id)}>
                                         X
                                     </button>
                                 </div>
@@ -40,6 +46,22 @@ class Addmemo extends Component{
         );
     }
 
+    componentDidMount(){
+        this.fetechData();
+    }
+
+    fetechData(){
+        let temparray = [];
+        this.dbRef.onSnapshot(snap=>{
+            temparray = [];
+            snap.forEach(doc=>{
+                temparray.push({id:doc.id,memo:doc.data().memo});
+            });
+            this.setState({memoList:temparray});
+        });
+        
+    }
+
     handleChange(e){
         this.setState({memo: e.target.value});
      
@@ -47,9 +69,7 @@ class Addmemo extends Component{
 
     handleClick(e){
         if(this.state.memo !== ''){
-            var arrayvar = this.state.memoList;
-            arrayvar.push(this.state.memo);
-            this.setState({ memoList: arrayvar });
+            this.dbRef.add({memo:this.state.memo}).then(console.log("Entered Memo")).catch("Error inserting Memo");
             this.setState({memo:''});
         }
     }
@@ -62,10 +82,11 @@ class Addmemo extends Component{
     }
 
     deleteMemo(itr,e){
-        console.log(itr);
-        var arr = this.state.memoList;
-        arr.splice(itr,1);
-        this.setState({memoList:arr})
+        this.dbRef.doc(itr).delete().then(function() {
+            console.log("Memo successfully deleted!");
+        }).catch(function(error) {
+            console.error("Error removing Memo: ", error);
+        });
     }
 }
 
